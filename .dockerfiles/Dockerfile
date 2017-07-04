@@ -10,6 +10,13 @@ RUN         /root/.pyenv/versions/deploy_eb_docker/bin/pip install -r .requireme
 
 # supervisor파일 복사
 COPY        .config/supervisor/uwsgi.conf /etc/supervisor/conf.d/
+COPY        .config/supervisor/nginx.conf /etc/supervisor/conf.d/
+
+# nginx파일 복사
+COPY        .config/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY        .config/nginx/nginx-app.conf /etc/nginx/sites-available/nginx-app.conf
+RUN         rm -rf /etc/nginx/sites-enabled/default
+RUN         ln -sf /etc/nginx/sites-available/nginx-app.conf /etc/nginx/sites-enabled/nginx-app.conf
 
 CMD         supervisord -n
 EXPOSE      80 8000
@@ -22,6 +29,16 @@ EXPOSE      80 8000
 #   supervisor사용
 # 3. uwsgi설정을 ini파일로 작성(.config/uwsgi/uwsgi-app.ini)하고
 #     작성한 파일로 실행되도록 supervisor/uwsgi.conf파일을 수정
+# 4. nginx설정파일, nginx사이트파일 (nginx.conf, nginx-app.conf)을 각각
+#     /etc/nginx/nginx.conf, /etc/nginx/sites-available/nginx-app.conf로 복사
+#    이후 링크작성 (/etc/nginx/sites-enabled/nginx-app.conf로 /etc/nginx/sites-available/nginx-app.conf를 연결)
+#     /etc/nginx/sites-enabled/default 삭제
+# 4-1. supervisord실행부분을 주석처리하고 docker run으로 /bin/zsh을 2개 실행 (2번째는 docker exec사용)
+#       직접 nginx와 uwsgi를 실행해서 외부에서 80번포트로 잘 연결되는지 확인
+#       안되면 로그확인하기
+#           uwsgi: /tmp/uwsgi.log
+#           nginx: /var/log/nginx/error.log
+
 
 
 # uwsgi실행경로
