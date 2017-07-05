@@ -8,7 +8,7 @@ WSGI_APPLICATION = 'config.wsgi.debug.application'
 
 # Static URLs
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+STATIC_ROOT = os.path.join(ROOT_DIR, '.static_root')
 
 # 디버그모드니까 DEBUG는 True
 DEBUG = True
