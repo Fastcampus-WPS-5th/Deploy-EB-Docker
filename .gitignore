@@ -3,6 +3,7 @@
 .config_secret/
 static_root/
 .static_root/
+.media/
 
 # Created by https://www.gitignore.io/api/vim,macos,linux,django,python,pycharm
 
