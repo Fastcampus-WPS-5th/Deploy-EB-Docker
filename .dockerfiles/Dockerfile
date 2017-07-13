@@ -1,6 +1,8 @@
 FROM        eb_ubuntu
 MAINTAINER  dev@azelf.com
 
+ENV         LANG C.UTF-8
+
 # 현재경로의 모든 파일들을 컨테이너의 /srv/app폴더에 복사
 COPY        . /srv/app
 # cd /srv/app와 같은 효과
@@ -19,7 +21,7 @@ RUN         rm -rf /etc/nginx/sites-enabled/default
 RUN         ln -sf /etc/nginx/sites-available/nginx-app.conf /etc/nginx/sites-enabled/nginx-app.conf
 
 # collectstatic 실행
-RUN         /root/.pyenv/versions/app/bin/python /srv/app/django_app/manage.py collectstatic --settings=config.settings.deploy --noinput
+#RUN         /root/.pyenv/versions/app/bin/python /srv/app/django_app/manage.py collectstatic --settings=config.settings.deploy --noinput
 
 CMD         supervisord -n
 EXPOSE      80 8000
