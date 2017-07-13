@@ -26,10 +26,10 @@ RUN         echo 'eval "$(pyenv init -)"' >> ~/.zshrc
 RUN         echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshrc
 
 # pyenv virtualenv
-RUN         pyenv virtualenv 3.6.1 deploy_eb_docker
+RUN         pyenv virtualenv 3.6.1 app
 
 # uWGSI install
-RUN         /root/.pyenv/versions/deploy_eb_docker/bin/pip install uwsgi
+RUN         /root/.pyenv/versions/app/bin/pip install uwsgi
 
 # Nginx install
 RUN         apt-get -y install nginx

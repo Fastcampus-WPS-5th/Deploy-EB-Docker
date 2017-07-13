@@ -1,12 +1,12 @@
 FROM        azelf/eb_ubuntu
 MAINTAINER  dev@azelf.com
 
-# 현재경로의 모든 파일들을 컨테이너의 /srv/deploy_eb_docker폴더에 복사
-COPY        . /srv/deploy_eb_docker
-# cd /srv/deploy_eb_docker와 같은 효과
-WORKDIR     /srv/deploy_eb_docker
+# 현재경로의 모든 파일들을 컨테이너의 /srv/app폴더에 복사
+COPY        . /srv/app
+# cd /srv/app와 같은 효과
+WORKDIR     /srv/app
 # requirements설치
-RUN         /root/.pyenv/versions/deploy_eb_docker/bin/pip install -r .requirements/deploy.txt
+RUN         /root/.pyenv/versions/app/bin/pip install -r .requirements/deploy.txt
 
 # supervisor파일 복사
 COPY        .config/supervisor/uwsgi.conf /etc/supervisor/conf.d/
@@ -19,7 +19,7 @@ RUN         rm -rf /etc/nginx/sites-enabled/default
 RUN         ln -sf /etc/nginx/sites-available/nginx-app.conf /etc/nginx/sites-enabled/nginx-app.conf
 
 # collectstatic 실행
-RUN         /root/.pyenv/versions/deploy_eb_docker/bin/python /srv/deploy_eb_docker/django_app/manage.py collectstatic --settings=config.settings.deploy --noinput
+RUN         /root/.pyenv/versions/app/bin/python /srv/app/django_app/manage.py collectstatic --settings=config.settings.deploy --noinput
 
 CMD         supervisord -n
 EXPOSE      80 8000
@@ -45,13 +45,13 @@ EXPOSE      80 8000
 
 
 # uwsgi실행경로
-#    /root/.pyenv/versions/deploy_eb_docker/bin/uwsgi
+#    /root/.pyenv/versions/app/bin/uwsgi
 
 # uwsgi를
 #    http 8000포트,
 #    chdir 프로젝트 django코드
 #    home 가상환경 경로 적용 후 실행
-#/root/.pyenv/versions/deploy_eb_docker/bin/uwsgi \
+#/root/.pyenv/versions/app/bin/uwsgi \
 #--http :8000 \
-#--chdir /srv/deploy_eb_docker/django_app \
-#--home /root/.pyenv/versions/deploy_eb_docker -w config.wsgi.debug
+#--chdir /srv/app/django_app \
+#--home /root/.pyenv/versions/app -w config.wsgi.debug

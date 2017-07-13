@@ -12,7 +12,6 @@ AWS_SECRET_ACCESS_KEY = config_secret_deploy['aws']['secret_access_key']
 AWS_STORAGE_BUCKET_NAME = config_secret_deploy['aws']['s3_bucket_name']
 AWS_S3_REGION_NAME = config_secret_deploy['aws']['s3_region_name']
 S3_USE_SIGV4 = True
-# AWS_S3_SIGNATURE_VERSION = config_secret_deploy['aws']['s3_signature_version']
 
 # Storage settings
 STATICFILES_LOCATION = 'static'
