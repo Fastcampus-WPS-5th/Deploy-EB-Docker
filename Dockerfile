@@ -20,6 +20,13 @@ COPY        .config/nginx/nginx-app.conf /etc/nginx/sites-available/nginx-app.co
 RUN         rm -rf /etc/nginx/sites-enabled/default
 RUN         ln -sf /etc/nginx/sites-available/nginx-app.conf /etc/nginx/sites-enabled/nginx-app.conf
 
+# front프로젝트 복사
+WORKDIR     /srv
+RUN         git clone https://github.com/Fastcampus-WPS-5th/Front-end-example.git front
+WORKDIR     /srv/front
+RUN         npm install
+RUN         npm run build
+
 # collectstatic 실행
 #RUN         /root/.pyenv/versions/app/bin/python /srv/app/django_app/manage.py collectstatic --settings=config.settings.deploy --noinput
 
